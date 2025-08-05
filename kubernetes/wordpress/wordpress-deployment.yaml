@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: wordpress
-          image: vasileborcila/temastd:wordpress # Schimbă de la localhost:5000
+          image: localhost:32000/wordpress:latest
           ports:
             - containerPort: 80
           env:

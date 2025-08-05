@@ -17,4 +17,4 @@ spec:
     spec:
       containers:
         - name: ai-backend
-          image: vasileborcila/temastd:ai-backend
+          image: localhost:32000/ai-frontend:latest

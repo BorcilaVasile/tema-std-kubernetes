@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: chat-frontend
-          image: vasileborcila/temastd:chat-frontend
+          image: localhost:32000/chat-frontend:latest
           ports:
             - containerPort: 90
