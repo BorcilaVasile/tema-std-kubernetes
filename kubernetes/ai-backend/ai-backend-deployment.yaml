@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-backend
+  namespace: tema-std
+  labels:
+    app: ai-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ai-backend
+  template:
+    metadata:
+      labels:
+        app: ai-backend
+    spec:
+      containers:
+        - name: ai-backend
+          image: localhost:5000/ai-backend:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PORT
+              value: "3000"
+            - name: AZURE_STORAGE_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: azure-credentials
+                  key: AZURE_STORAGE_CONNECTION_STRING
+            - name: FORM_RECOGNIZER_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: azure-credentials
+                  key: FORM_RECOGNIZER_ENDPOINT
+            - name: FORM_RECOGNIZER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: azure-credentials
+                  key: FORM_RECOGNIZER_KEY
+            - name: SQL_CONNECTION_STRING
+              valueFrom:
+                secretKeyRef:
+                  name: azure-credentials
+                  key: SQL_CONNECTION_STRING
+        - name: chat-frontend
+          image: vasileborcila/temastd:chat-frontend

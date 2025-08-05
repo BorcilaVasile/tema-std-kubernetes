@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tema-std
+  labels:
+    name: tema-std
+    app: ai-chat-app

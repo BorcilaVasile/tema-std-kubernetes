@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: chat-frontend-service
+  namespace: tema-std
+  labels:
+    app: chat-frontend
+spec:
+  selector:
+    app: chat-frontend
+  ports:
+    - port: 90
+      targetPort: 90
+  type: LoadBalancer

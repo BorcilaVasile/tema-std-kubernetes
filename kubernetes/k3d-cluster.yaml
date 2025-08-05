@@ -1,0 +1,27 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: sltf-cluster
+servers: 1
+agents: 1
+ports:
+  - port: 80:80
+    nodeFilters:
+      - loadbalancer
+  - port: 88:88
+    nodeFilters:
+      - loadbalancer
+  - port: 90:90
+    nodeFilters:
+      - loadbalancer
+  - port: 443:443
+    nodeFilters:
+      - loadbalancer
+registries:
+  use:
+    - k3d-localhost-registry
+  config: |
+    mirrors:
+      "localhost:5000":
+        endpoint:
+          - http://k3d-localhost-registry:5000

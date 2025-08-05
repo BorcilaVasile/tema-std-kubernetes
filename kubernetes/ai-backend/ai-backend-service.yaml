@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ai-backend-service
+  namespace: tema-std
+  labels:
+    app: ai-backend
+spec:
+  selector:
+    app: ai-backend
+  ports:
+    - port: 3000
+      targetPort: 3000
+      nodePort: 30000
+  type: NodePort

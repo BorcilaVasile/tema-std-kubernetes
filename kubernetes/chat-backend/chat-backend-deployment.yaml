@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chat-backend
+  namespace: tema-std
+  labels:
+    app: chat-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: chat-backend
+  template:
+    metadata:
+      labels:
+        app: chat-backend
+    spec:
+      containers:
+        - name: chat-backend
+          image: vasileborcila/temastd:chat-backend
+          ports:
+            - containerPort: 88
+          env:
+            - name: PORT
+              value: "88"
+            - name: MONGODB_URI
+              value: "mongodb://mongodb-service:27017/chatapp"

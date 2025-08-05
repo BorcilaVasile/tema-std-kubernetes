@@ -1,0 +1,19 @@
+k3d cluster create -c k3d-cluster.yaml   // creare cluster k3d 
+kubectl get nodes 
+kubectl cluster-info
+
+1. Namespace            v
+2. Secrets              v
+3. MySql                v 
+4. MongoDB              v
+5. AI backend           v
+6. Chat backend         v
+7. AI frontend          v 
+            -- ng build --base-href=/ai/
+8. Chat frontend        v
+9. wordpress
+10. Ingress
+
+
+--parola wordpress
+^MqQ3#gs(DtuT8qRWg
