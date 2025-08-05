@@ -9,4 +9,4 @@ data:
     - name: default
       protocol: layer2
       addresses:
-      - 10.0.0.10-10.0.0.20   # <-- adaptează la subnetul tău!
+      - 10.0.0.4-10.0.0.20
