@@ -48,8 +48,6 @@ metadata:
     service.beta.kubernetes.io/azure-load-balancer-internal: "false" # IP public
 spec:
   type: LoadBalancer
-  externalIPs:
-    - 51.103.96.139
   selector:
     app: ingress-nginx
   ports:
