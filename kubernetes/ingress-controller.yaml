@@ -44,8 +44,6 @@ kind: Service
 metadata:
   name: ingress-nginx-controller
   namespace: tema-std
-  annotations:
-    service.beta.kubernetes.io/azure-load-balancer-internal: "false" # IP public
 spec:
   type: LoadBalancer
   selector:
