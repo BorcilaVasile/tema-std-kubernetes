@@ -26,10 +26,9 @@ metadata:
   name: redis-service
   namespace: tema-std
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
     - port: 6379
       targetPort: 6379
-      nodePort: 30679
   selector:
     app: redis
