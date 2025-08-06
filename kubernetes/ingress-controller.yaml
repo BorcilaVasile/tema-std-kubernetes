@@ -44,6 +44,8 @@ kind: Service
 metadata:
   name: ingress-nginx-controller
   namespace: tema-std
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "false" # IP public
 spec:
   type: LoadBalancer
   selector:
@@ -52,6 +54,8 @@ spec:
     - name: http
       port: 80
       targetPort: 80
+      protocol: TCP
     - name: https
       port: 443
       targetPort: 443
+      protocol: TCP
