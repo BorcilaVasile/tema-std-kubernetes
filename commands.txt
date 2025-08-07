@@ -17,3 +17,22 @@ kubectl cluster-info
 
 --parola wordpress
 ^MqQ3#gs(DtuT8qRWg
+
+
+docker pull vasileborcila/temastd:ai-frontend
+docker pull vasileborcila/temastd:ai-backend
+docker pull vasileborcila/temastd:chat-frontend
+docker pull vasileborcila/temastd:chat-backend
+docker pull vasileborcila/temastd:wordpress
+
+docker tag vasileborcila/temastd:ai-frontend localhost:32000/ai-frontend:latest
+docker tag vasileborcila/temastd:ai-backend localhost:32000/ai-backend:latest
+docker tag vasileborcila/temastd:chat-frontend localhost:32000/chat-frontend:latest
+docker tag vasileborcila/temastd:chat-backend localhost:32000/chat-backend:latest
+docker tag vasileborcila/temastd:wordpress localhost:32000/wordpress:latest
+
+docker push localhost:32000/ai-frontend:latest
+docker push localhost:32000/ai-backend:latest
+docker push localhost:32000/chat-frontend:latest
+docker push localhost:32000/chat-backend:latest
+docker push localhost:32000/wordpress:latest

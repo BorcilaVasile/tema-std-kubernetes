@@ -43,5 +43,3 @@ spec:
                 secretKeyRef:
                   name: azure-credentials
                   key: SQL_CONNECTION_STRING
-        - name: chat-frontend
-          image: vasileborcila/temastd:chat-frontend
