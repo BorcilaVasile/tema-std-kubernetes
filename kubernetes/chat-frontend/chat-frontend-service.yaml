@@ -11,4 +11,5 @@ spec:
   ports:
     - port: 90
       targetPort: 90
-  type: LoadBalancer
+      nodePort: 31250
+  type: NodePort
