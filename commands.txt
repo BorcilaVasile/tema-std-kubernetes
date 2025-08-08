@@ -36,3 +36,7 @@ docker push localhost:32000/ai-backend:latest
 docker push localhost:32000/chat-frontend:latest
 docker push localhost:32000/chat-backend:latest
 docker push localhost:32000/wordpress:latest
+
+#pornire Kubelet
+sudo systemctl start kubelet
+sudo systemctl status kubelet 
