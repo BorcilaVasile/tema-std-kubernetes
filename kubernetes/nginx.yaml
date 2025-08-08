@@ -4,6 +4,8 @@ kind: ConfigMap
 metadata:
   name: nginx-config
   namespace: tema-std
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 10.0.0.109
 data:
   default: |
     server {
