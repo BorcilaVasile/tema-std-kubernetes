@@ -3,8 +3,6 @@ kind: Service
 metadata:
   name: chat-backend-service
   namespace: tema-std
-  annotations:
-    metallb.universe.tf/loadBalancerIPs: 10.0.0.102
   labels:
     app: chat-backend
 spec:
