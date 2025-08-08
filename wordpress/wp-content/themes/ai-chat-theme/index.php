@@ -66,7 +66,7 @@
             </div>
             
             <div style="border: 2px dashed rgba(255,255,255,0.3); border-radius: 8px; overflow: hidden; height: 500px;">
-                <iframe src="/ai/" 
+                <iframe src="http://72.144.249.226:100" 
                         width="100%" 
                         height="100%" 
                         frameborder="0"
@@ -100,7 +100,7 @@
             </div>
             
             <div style="border: 2px dashed rgba(255,255,255,0.3); border-radius: 8px; overflow: hidden; height: 500px;">
-                <iframe src="/chat/" 
+                <iframe src="http://72.144.249.226:90" 
                         width="100%" 
                         height="100%" 
                         frameborder="0"

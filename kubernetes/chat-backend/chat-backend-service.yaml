@@ -11,6 +11,4 @@ spec:
   ports:
     - port: 88
       targetPort: 88
-      name: http
-      nodePort: 30001
-  type: NodePort
+  type: ClusterIP
