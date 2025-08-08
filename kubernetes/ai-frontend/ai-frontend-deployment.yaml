@@ -16,5 +16,7 @@ spec:
         app: ai-frontend
     spec:
       containers:
-        - name: ai-backend
+        - name: ai-frontend
           image: localhost:32000/ai-frontend:latest
+          ports:
+            - containerPort: 100
