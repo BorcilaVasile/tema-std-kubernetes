@@ -4,7 +4,7 @@ metadata:
   name: chat-frontend-service
   namespace: tema-std
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 10.0.0.102
+    metallb.universe.tf/loadBalancerIPs: 10.0.0.104
   labels:
     app: chat-frontend
 spec:
