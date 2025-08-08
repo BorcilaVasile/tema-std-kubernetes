@@ -25,6 +25,8 @@ kind: Service
 metadata:
   name: redis-service
   namespace: tema-std
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 10.0.0.103
 spec:
   type: LoadBalancer
   ports:

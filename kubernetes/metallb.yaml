@@ -1,14 +1,21 @@
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: my-ip-pool
+  name: azure-pool
   namespace: metallb-system
 spec:
   addresses:
-    - 10.0.0.6-10.0.0.6
+    - 10.0.0.100-10.0.0.200 # Interval IP-uri disponibile în rețeaua Azure
+  autoAssign: true
+
 ---
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
-  name: l2-advertisement
+  name: azure-l2
   namespace: metallb-system
+spec:
+  ipAddressPools:
+    - azure-pool
+  interfaces:
+    - eth0 # Interfața de rețea a nodurilor
