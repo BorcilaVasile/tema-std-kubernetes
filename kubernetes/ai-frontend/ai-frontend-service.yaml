@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: ai-frontend-service
   namespace: tema-std
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 10.0.0.101
   labels:
     app: ai-frontend
 spec:
@@ -11,4 +13,4 @@ spec:
   ports:
     - port: 100
       targetPort: 80
-  type: ClusterIP
+  type: LoadBalancer
