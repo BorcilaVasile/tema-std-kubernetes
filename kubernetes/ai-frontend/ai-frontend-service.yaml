@@ -12,5 +12,5 @@ spec:
     app: ai-frontend
   ports:
     - port: 100
-      targetPort: 100
+      targetPort: 80
   type: LoadBalancer
