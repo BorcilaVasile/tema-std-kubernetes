@@ -40,3 +40,15 @@ docker push localhost:32000/wordpress:latest
 #pornire Kubelet
 sudo systemctl start kubelet
 sudo systemctl status kubelet 
+
+
+#sterge tot 
+kubectl delete all --all -n tema-std
+kubectl delete pvc --all -n tema-std
+kubectl delete configmap --all -n tema-std
+kubectl delete secret --all -n tema-std
+
+kubectl delete namespace tema-std
+
+#porneste tot 
+kubectl apply -f kubernetes/ --recursive
