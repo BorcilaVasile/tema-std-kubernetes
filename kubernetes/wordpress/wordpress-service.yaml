@@ -3,8 +3,6 @@ kind: Service
 metadata:
   name: wordpress-service
   namespace: tema-std
-  annotations:
-    metallb.universe.tf/loadBalancerIPs: 10.0.0.100
   labels:
     app: wordpress
 spec:
@@ -13,4 +11,4 @@ spec:
   ports:
     - port: 80
       targetPort: 80
-  type: LoadBalancer
+  type: ClusterIP
