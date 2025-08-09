@@ -11,4 +11,6 @@ spec:
   ports:
     - port: 88
       targetPort: 88
-  type: ClusterIP
+      name: websocket
+  type: LoadBalancer
+  externalTrafficPolicy: Local

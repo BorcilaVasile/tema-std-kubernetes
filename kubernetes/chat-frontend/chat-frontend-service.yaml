@@ -13,4 +13,6 @@ spec:
   ports:
     - port: 90
       targetPort: 90
+      name: http
   type: LoadBalancer
+  externalTrafficPolicy: Local
