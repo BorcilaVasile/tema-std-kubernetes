@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: ai-frontend
-          image: localhost:32000/ai-frontend:latest
+          image: vasileborcila/temastd:ai-frontend
           ports:
             - containerPort: 100
