@@ -66,16 +66,11 @@
             </div>
             
             <div style="border: 2px dashed rgba(255,255,255,0.3); border-radius: 8px; overflow: hidden; height: 500px;">
-                <iframe src="http://72.144.249.226:100" 
+                <iframe src="<?php echo home_url(); ?>:100"
                         width="100%" 
                         height="100%" 
                         frameborder="0"
-                        title="Aplicația AI pentru analizarea cărților">
-                    <p style="text-align: center; padding: 2rem;">
-                        Se încarcă aplicația AI pentru cărți... <br>
-                        <a href="/ai/" style="color: white;">Accesează aplicația AI direct →</a>
-                    </p>
-                </iframe>
+                        title="Aplicația AI pentru analizarea cărților"></iframe>
             </div>
         </div>
 
@@ -100,7 +95,7 @@
             </div>
             
             <div style="border: 2px dashed rgba(255,255,255,0.3); border-radius: 8px; overflow: hidden; height: 500px;">
-                <iframe src="http://72.144.249.226:90" 
+                <iframe src="<?php echo home_url(); ?>:90" 
                         width="100%" 
                         height="100%" 
                         frameborder="0"

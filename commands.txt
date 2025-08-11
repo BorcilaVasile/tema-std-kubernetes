@@ -52,3 +52,14 @@ kubectl delete namespace tema-std
 
 #porneste tot 
 kubectl apply -f kubernetes/ --recursive
+
+
+
+# oprire nginx 
+sudo systemctl stop nginx
+sudo systemctl disable nginx
+
+#stergere 
+sudo apt remove nginx nginx-common
+sudo apt purge nginx nginx-common
+sudo apt autoremove
