@@ -1,3 +1,8 @@
+<?php
+$server_ip = rtrim($_SERVER['SERVER_ADDR'], '/');
+$iframe_ai_url = "http://{$server_ip}:100";
+$iframe_chat_url = "http://{$server_ip}:90";
+?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -66,7 +71,7 @@
             </div>
             
             <div style="border: 2px dashed rgba(255,255,255,0.3); border-radius: 8px; overflow: hidden; height: 500px;">
-                <iframe src="<?php echo home_url(); ?>:100"
+                <iframe src="<?php echo htmlspecialchars($iframe_ai_url); ?>"
                         width="100%" 
                         height="100%" 
                         frameborder="0"
@@ -95,7 +100,7 @@
             </div>
             
             <div style="border: 2px dashed rgba(255,255,255,0.3); border-radius: 8px; overflow: hidden; height: 500px;">
-                <iframe src="<?php echo home_url(); ?>:90" 
+                <iframe src="<?php echo htmlspecialchars($iframe_chat_url); ?>" 
                         width="100%" 
                         height="100%" 
                         frameborder="0"
