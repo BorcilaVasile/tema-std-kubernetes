@@ -1,5 +1,5 @@
 <?php
-$server_ip = rtrim($_SERVER['SERVER_ADDR'], '/');
+//$server_ip = rtrim($_SERVER['SERVER_ADDR'], '/');
 $iframe_ai_url = "http://{$server_ip}:100";
 $iframe_chat_url = "http://{$server_ip}:90";
 ?>

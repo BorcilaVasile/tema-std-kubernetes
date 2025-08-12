@@ -17,6 +17,11 @@ if [ -n "$WORDPRESS_HOME" ]; then
     sed -i "s|http://localhost:8080|$WORDPRESS_HOME|g" /var/www/html/wp-config.php || true
 fi
 
+if [ -d "/var/www/html/wp-content/themes/ai-chat-theme" ]; then
+    echo "🎨 Activez tema ai-chat-theme..."
+    sudo -u www-data wp theme activate ai-chat-theme --path=/var/www/html --allow-root || true
+fi
+
 # Setează permisiuni finale
 chown -R www-data:www-data /var/www/html
 
