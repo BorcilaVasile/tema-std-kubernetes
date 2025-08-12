@@ -4,8 +4,8 @@ metadata:
   name: wordpress-service
   namespace: tema-std
   annotations:
-    # metallb.universe.tf/loadBalancerIPs: 10.0.0.100
-    metallb.universe.tf/allow-shared-ip: shared-ip-key
+    metallb.universe.tf/loadBalancerIPs: 10.0.0.100
+    # metallb.universe.tf/allow-shared-ip: shared-ip-key
   labels:
     app: wordpress
 spec:
