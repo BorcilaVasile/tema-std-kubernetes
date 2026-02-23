@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: wordpress
-          image: vasileborcila/temastd:wordpress
+          image: 10.96.100.100:5000/wordpress
           imagePullPolicy: Always
           ports:
             - containerPort: 80
@@ -40,11 +40,11 @@ spec:
                   name: mysql-secret
                   key: MYSQL_DATABASE
             - name: WORDPRESS_HOME
-              value: "http://localhost"
-          # volumeMounts:  # Comentat temporar!
+              value: "http://4.210.176.244"
+          # volumeMounts:  # WordPress content is in Docker image
           #   - name: wordpress-data
           #     mountPath: /var/www/html
-      # volumes:  # Comentat temporar!
+      # volumes:
       #   - name: wordpress-data
       #     persistentVolumeClaim:
       #       claimName: wordpress-data

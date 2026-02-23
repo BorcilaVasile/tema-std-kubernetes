@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
         - name: chat-backend
-          image: vasileborcila/temastd:chat-backend
+          image: 10.96.100.100:5000/chat-backend
+          imagePullPolicy: Always
           ports:
             - containerPort: 88
           env:

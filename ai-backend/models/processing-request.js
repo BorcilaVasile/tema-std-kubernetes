@@ -1,6 +1,3 @@
-/**
- * Model pentru cererea de procesare
- */
 class ProcessingRequest {
   constructor(data) {
     this.id = data.id;
@@ -14,7 +11,6 @@ class ProcessingRequest {
     this.updatedAt = data.updatedAt || new Date();
   }
 
-  // Metodă pentru transformarea în JSON pentru API
   toApiResponse() {
     return {
       id: this.id,

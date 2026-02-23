@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
         - name: ai-backend
-          image: vasileborcila/temastd:ai-backend
+          image: 10.96.100.100:5000/ai-backend
+          imagePullPolicy: Always
           ports:
             - containerPort: 3000
           env:

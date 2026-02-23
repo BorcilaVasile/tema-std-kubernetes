@@ -6,19 +6,17 @@ class FormRecognizerService {
     const endpoint = process.env.FORM_RECOGNIZER_ENDPOINT;
     const key = process.env.FORM_RECOGNIZER_KEY;
 
-    // Verifică existența variabilelor
     if (!endpoint || !key) {
       throw new Error('Azure Form Recognizer credentials missing!');
     }
 
-    // Verifică formatul endpoint
     if (!endpoint.startsWith('https://')) {
       throw new Error('Invalid endpoint format. Must start with https://');
     }
 
     this.client = new DocumentAnalysisClient(endpoint, new AzureKeyCredential(key.trim()));
 
-    if(!this.client){ 
+    if (!this.client) {
       throw new Error('Form Recognizer client could not be initialized');
     }
 
@@ -29,17 +27,16 @@ class FormRecognizerService {
     if (!this.client) {
       throw new Error('Form Recognizer Service nu a fost inițializat corect');
     }
-    
+
     try {
       console.log(`Analyzing document: ${documentUrl}`);
-      
-      // Test URL accessibility before sending to Form Recognizer
+
       try {
-        const urlTest = await fetch(documentUrl, { 
+        const urlTest = await fetch(documentUrl, {
           method: 'HEAD',
-          headers: { 'Cache-Control': 'no-cache' } 
+          headers: { 'Cache-Control': 'no-cache' }
         });
-        
+
         if (!urlTest.ok) {
           throw {
             code: 'AccessError',
@@ -57,22 +54,20 @@ class FormRecognizerService {
           technicalDetails: 'Verificați conexiunea la rețea și validitatea URL-ului'
         };
       }
-      
+
       console.log('Document URL accessible, proceeding with analysis...');
-      
-      // Utilizează Form Recognizer pentru analiza documentului
+
       const poller = await this.client.beginAnalyzeDocumentFromUrl(modelId, documentUrl);
       const result = await poller.pollUntilDone();
-      
+
       if (!result) {
         throw new Error('Analiza documentului a eșuat');
       }
-      
+
       console.log('Document analyzed successfully');
-      
-      // Extragere conținut
+
       const content = result.content;
-      
+
       return {
         pageCount: result.pages ? result.pages.length : 0,
         content: content,
@@ -82,7 +77,6 @@ class FormRecognizerService {
         styles: result.styles || []
       };
     } catch (error) {
-      // Construiește un obiect de eroare mai detaliat
       const errorDetails = {
         message: error.message || 'Eroare la analiza documentului',
         code: error.code || 'ProcessingError',
@@ -95,7 +89,7 @@ class FormRecognizerService {
           'Verificați dacă documentul nu este corupt sau protejat prin parolă'
         ]
       };
-      
+
       console.error(`Eroare detaliată la analiza documentului:`, errorDetails);
       throw errorDetails;
     }
@@ -105,21 +99,20 @@ class FormRecognizerService {
     try {
       const poller = await this.client.beginAnalyzeDocumentFromUrl('prebuilt-read', documentUrl);
       const result = await poller.pollUntilDone();
-      
+
       if (!result) {
         throw new Error('Extragerea textului a eșuat');
       }
-      
-      // Formatează rezultatul
+
       const text = result.content;
-      
+
       const pages = result.pages.map(page => ({
         number: page.pageNumber,
         text: page.lines?.map(line => line.content).join('\n') || '',
         width: page.width,
         height: page.height
       }));
-      
+
       return { text, pages };
     } catch (error) {
       console.error('Eroare la extragerea textului:', error);
@@ -131,16 +124,16 @@ class FormRecognizerService {
     try {
       const poller = await this.client.beginAnalyzeDocumentFromUrl('prebuilt-layout', documentUrl);
       const result = await poller.pollUntilDone();
-      
+
       if (!result) {
         throw new Error('Analiza layout-ului a eșuat');
       }
-      
+
       const paragraphs = result.paragraphs?.map(para => ({
         content: para.content,
         boundingBox: para.boundingRegions?.[0]?.polygon || []
       })) || [];
-      
+
       return {
         tables: result.tables || [],
         paragraphs: paragraphs,
@@ -153,8 +146,6 @@ class FormRecognizerService {
   }
 }
 
-// Instanțiază serviciul
 const formRecognizerService = new FormRecognizerService();
 
-// Exportă serviciul
 module.exports = formRecognizerService;

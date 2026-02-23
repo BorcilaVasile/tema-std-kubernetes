@@ -3,9 +3,6 @@ kind: Service
 metadata:
   name: wordpress-service
   namespace: tema-std
-  annotations:
-    metallb.universe.tf/loadBalancerIPs: 10.0.0.100
-    # metallb.universe.tf/allow-shared-ip: shared-ip-key
   labels:
     app: wordpress
 spec:
@@ -15,5 +12,4 @@ spec:
     - port: 80
       targetPort: 80
       name: http
-  type: LoadBalancer
-  externalTrafficPolicy: Local
+  type: ClusterIP

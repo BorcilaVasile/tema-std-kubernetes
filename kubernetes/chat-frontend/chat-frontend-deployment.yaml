@@ -17,6 +17,7 @@ spec:
     spec:
       containers:
         - name: chat-frontend
-          image: vasileborcila/temastd:chat-frontend
+          image: 10.96.100.100:5000/chat-frontend
+          imagePullPolicy: Always
           ports:
             - containerPort: 90

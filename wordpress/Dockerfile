@@ -26,13 +26,21 @@ RUN cd /tmp/html && \
 # Stage 2: Imagine finală optimizată
 FROM wordpress:latest
 
+# Instalează WP-CLI pentru setup automat
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    chmod +x wp-cli.phar && \
+    mv wp-cli.phar /usr/local/bin/wp
+
 # Copiază conținutul optimizat
 COPY --from=content-builder /tmp/html/ /var/www/html/
 COPY --from=content-builder /tmp/uploads.ini /usr/local/etc/php/conf.d/
 
+# Copiază tema custom
+COPY wp-content/themes/ai-chat-theme/ /var/www/html/wp-content/themes/ai-chat-theme/
+
 # Script de inițializare
 COPY init-wordpress.sh /usr/local/bin/init-wordpress.sh
-RUN chmod +x /usr/local/bin/init-wordpress.sh
+RUN sed -i 's/\r$//' /usr/local/bin/init-wordpress.sh && chmod +x /usr/local/bin/init-wordpress.sh
 
 # Cleanup final agresiv
 RUN apt-get clean && \

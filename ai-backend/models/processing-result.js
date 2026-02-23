@@ -1,6 +1,3 @@
-/**
- * Model pentru rezultatul procesării
- */
 class ProcessingResult {
   constructor(data) {
     this.id = data.id;
@@ -11,7 +8,6 @@ class ProcessingResult {
     this.processingDate = data.processingDate || new Date();
   }
 
-  // Metodă pentru transformarea în JSON pentru API
   toApiResponse() {
     return {
       id: this.id,

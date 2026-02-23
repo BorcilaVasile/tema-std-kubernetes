@@ -5,8 +5,7 @@ class DatabaseService {
   constructor() {
     this.pool = null;
     this.isDbAvailable = false;
-    
-    // In-memory storage for fallback mode
+
     this.inMemoryRequests = new Map();
     this.inMemoryResults = new Map();
   }
@@ -31,8 +30,7 @@ class DatabaseService {
     try {
       if (!this.pool) {
         console.log('Încercare conectare la SQL Server...');
-        
-        // Use config object instead of connection string
+
         this.pool = await sql.connect(config);
         console.log('Conectat cu succes la baza de date Azure SQL');
         this.isDbAvailable = true;
@@ -49,8 +47,7 @@ class DatabaseService {
     if (!this.isDbAvailable) {
       console.log('Baza de date nu este disponibilă, se generează un ID local');
       const requestId = `local-${Date.now()}`;
-      
-      // Store in memory
+
       this.inMemoryRequests.set(requestId, {
         id: requestId,
         fileName: requestData.fileName,
@@ -61,15 +58,15 @@ class DatabaseService {
         createdAt: new Date(),
         updatedAt: new Date()
       });
-      
+
       console.log('In-memory request stored:', requestId, this.inMemoryRequests.has(requestId));
-      
+
       return requestId;
     }
-    
+
     try {
       await this.initialize();
-      
+
       const result = await this.pool.request()
         .input('fileName', sql.NVarChar, requestData.fileName)
         .input('fileType', sql.NVarChar, requestData.fileType)
@@ -81,7 +78,7 @@ class DatabaseService {
           OUTPUT INSERTED.id
           VALUES (@fileName, @fileType, @fileSize, @blobUrl, @status)
         `);
-      
+
       return result.recordset[0].id;
     } catch (error) {
       console.error('Eroare la crearea cererii de procesare:', error);
@@ -92,7 +89,7 @@ class DatabaseService {
   async updateProcessingStatus(requestId, status, errorMessage = null) {
     if (!this.isDbAvailable) {
       console.log('Baza de date nu este disponibilă, actualizarea statusului se face in memorie');
-      
+
       if (this.inMemoryRequests.has(requestId)) {
         const request = this.inMemoryRequests.get(requestId);
         request.status = status;
@@ -100,13 +97,13 @@ class DatabaseService {
         request.updatedAt = new Date();
         return true;
       }
-      
+
       return false;
     }
-    
+
     try {
       await this.initialize();
-      
+
       await this.pool.request()
         .input('requestId', sql.UniqueIdentifier, requestId)
         .input('status', sql.NVarChar, status)
@@ -119,7 +116,7 @@ class DatabaseService {
               updatedAt = @updatedAt
           WHERE id = @requestId
         `);
-      
+
       return true;
     } catch (error) {
       console.error('Eroare la actualizarea statusului de procesare:', error);
@@ -130,28 +127,24 @@ class DatabaseService {
   async saveProcessingResult(requestId, resultData) {
     if (!this.isDbAvailable) {
       console.log('Baza de date nu este disponibilă, salvarea rezultatului se face in memorie');
-      
-      // Update status to completed
+
       this.updateProcessingStatus(requestId, 'completed');
-      
-      // Store result in memory
+
       this.inMemoryResults.set(requestId, {
         id: `result-${Date.now()}`,
         requestId: requestId,
         resultData: resultData,
         processingDate: new Date()
       });
-      
+
       return true;
     }
-    
+
     try {
       await this.initialize();
-      
-      // Actualizează statusul cererii la 'completed'
+
       await this.updateProcessingStatus(requestId, 'completed');
-      
-      // Salvează rezultatul procesării
+
       await this.pool.request()
         .input('requestId', sql.UniqueIdentifier, requestId)
         .input('resultData', sql.NVarChar, JSON.stringify(resultData))
@@ -159,7 +152,7 @@ class DatabaseService {
           INSERT INTO ProcessingResults (requestId, resultData)
           VALUES (@requestId, @resultData)
         `);
-      
+
       return true;
     } catch (error) {
       console.error('Eroare la salvarea rezultatului procesării:', error);
@@ -168,38 +161,34 @@ class DatabaseService {
   }
 
   async getProcessingRequest(requestId) {
-    // Check if the ID is a fallback/local ID
     if (requestId.toString().startsWith('fallback-') || requestId.toString().startsWith('local-')) {
       console.log('ID de tip fallback detectat, se caută în memoria locală:', requestId);
       return this.inMemoryRequests.get(requestId) || null;
     }
-    
-    // If database is unavailable, check in-memory storage
+
     if (!this.isDbAvailable) {
       console.log('Baza de date nu este disponibilă, se caută în memoria locală');
       return this.inMemoryRequests.get(requestId) || null;
     }
-    
+
     try {
       await this.initialize();
-      
-      // Check if requestId is a valid GUID
+
       const isValidGuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(requestId);
-      
+
       if (!isValidGuid) {
         console.log('ID-ul nu este un GUID valid, se caută în memoria locală');
         return this.inMemoryRequests.get(requestId) || null;
       }
-      
+
       const result = await this.pool.request()
         .input('requestId', sql.UniqueIdentifier, requestId)
         .query('SELECT * FROM ProcessingRequests WHERE id = @requestId');
-        
+
       return result.recordset[0] || null;
     } catch (error) {
       console.error('Eroare la obținerea cererii de procesare:', error);
-      
-      // If SQL error, fall back to in-memory search
+
       return this.inMemoryRequests.get(requestId) || null;
     }
   }
@@ -209,10 +198,10 @@ class DatabaseService {
       console.log('Baza de date nu este disponibilă, se caută rezultatul în memoria locală');
       return this.inMemoryResults.get(requestId) || null;
     }
-    
+
     try {
       await this.initialize();
-      
+
       const result = await this.pool.request()
         .input('requestId', sql.UniqueIdentifier, requestId)
         .query(`
@@ -222,11 +211,11 @@ class DatabaseService {
           JOIN ProcessingRequests p ON r.requestId = p.id
           WHERE r.requestId = @requestId
         `);
-      
+
       if (result.recordset.length === 0) {
         return null;
       }
-      
+
       const record = result.recordset[0];
       return {
         id: record.id,
@@ -256,16 +245,16 @@ class DatabaseService {
           uploadDate: req.createdAt
         }));
     }
-    
+
     try {
       await this.initialize();
-      
+
       const result = await this.pool.request().query(`
         SELECT id, fileName, fileType, fileSize, status, createdAt as uploadDate
         FROM ProcessingRequests
         ORDER BY createdAt DESC
       `);
-      
+
       return result.recordset;
     } catch (error) {
       console.error('Eroare la obținerea istoricului de procesare:', error);
@@ -274,5 +263,4 @@ class DatabaseService {
   }
 }
 
-// Export singleton instance
 module.exports = new DatabaseService();

@@ -17,6 +17,7 @@ spec:
     spec:
       containers:
         - name: ai-frontend
-          image: vasileborcila/temastd:ai-frontend
+          image: 10.96.100.100:5000/ai-frontend
+          imagePullPolicy: Always
           ports:
-            - containerPort: 100
+            - containerPort: 80

@@ -1,0 +1,81 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  namespace: tema-std
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "120"
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_hide_header X-Frame-Options;
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          # AI Frontend
+          - path: /ai(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: ai-frontend-service
+                port:
+                  number: 80
+          # Chat Frontend
+          - path: /chat(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: chat-frontend-service
+                port:
+                  number: 90
+
+---
+# Chat Backend API + WebSocket — NO rewrite, backend handles /chatapi/* directly
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: chatapi-ingress
+  namespace: tema-std
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /chatapi
+            pathType: Prefix
+            backend:
+              service:
+                name: chat-backend-service
+                port:
+                  number: 88
+
+---
+# WordPress — no rewrite needed
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wordpress-ingress
+  namespace: tema-std
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: "50m"
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: wordpress-service
+                port:
+                  number: 80
